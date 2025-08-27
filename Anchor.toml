@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-message_gateway_v4 = "4Y3nNvrMJVybZStQAKdvPBPREr7fRuCjkSKe9yPg86We"
+message_gateway_v4 = "4hjwz5e8jYyj13wqRsUbvJYyCrsjt3EwSDRmppLJkjYL"
 
 [registry]
 url = "https://api.apr.dev"
