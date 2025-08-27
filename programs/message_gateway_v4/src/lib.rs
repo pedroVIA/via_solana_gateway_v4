@@ -8,7 +8,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("4Y3nNvrMJVybZStQAKdvPBPREr7fRuCjkSKe9yPg86We");
+declare_id!("4hjwz5e8jYyj13wqRsUbvJYyCrsjt3EwSDRmppLJkjYL");
 
 /// Via Labs V4 Message Gateway Program
 /// 
