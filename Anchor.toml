@@ -12,7 +12,7 @@ message_gateway_v4 = "4hjwz5e8jYyj13wqRsUbvJYyCrsjt3EwSDRmppLJkjYL"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
