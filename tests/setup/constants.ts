@@ -101,8 +101,10 @@ export const TEST_PAYLOADS = {
   EMPTY: Buffer.from(""),
   SIMPLE: Buffer.from("test"),
   MINT_COMMAND: Buffer.from("mint(100, USDC)"),
-  MAX_SIZE: Buffer.alloc(TEST_CONFIG.MAX_PAYLOAD_SIZE, 0xFF),
-  JSON_MESSAGE: Buffer.from(JSON.stringify({ action: "transfer", amount: 100 })),
+  MAX_SIZE: Buffer.alloc(TEST_CONFIG.MAX_PAYLOAD_SIZE, 0xff),
+  JSON_MESSAGE: Buffer.from(
+    JSON.stringify({ action: "transfer", amount: 100 })
+  ),
 } as const;
 
 /**

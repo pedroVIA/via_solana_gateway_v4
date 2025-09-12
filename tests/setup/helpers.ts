@@ -1,15 +1,15 @@
 import { BN } from "@coral-xyz/anchor";
 import * as anchor from "@coral-xyz/anchor";
 
-import { 
-  PublicKey, 
-  Connection, 
-  Keypair, 
+import {
+  PublicKey,
+  Connection,
+  Keypair,
   Transaction,
   TransactionInstruction,
   ComputeBudgetProgram,
   Commitment,
-  LAMPORTS_PER_SOL
+  LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
 import { PDA_SEEDS } from "./constants";
 
@@ -22,10 +22,7 @@ export function deriveGatewayPDA(
   chainId: BN
 ): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [
-      Buffer.from(PDA_SEEDS.GATEWAY),
-      chainId.toArrayLike(Buffer, "le", 8)
-    ],
+    [Buffer.from(PDA_SEEDS.GATEWAY), chainId.toArrayLike(Buffer, "le", 8)],
     programId
   );
 }
@@ -39,7 +36,7 @@ export function deriveTxIdPDA(
     [
       Buffer.from(PDA_SEEDS.TX_ID),
       sourceChainId.toArrayLike(Buffer, "le", 8),
-      txId.toArrayLike(Buffer, "le", 16)
+      txId.toArrayLike(Buffer, "le", 16),
     ],
     programId
   );
@@ -52,7 +49,7 @@ export function deriveCounterPDA(
   return PublicKey.findProgramAddressSync(
     [
       Buffer.from(PDA_SEEDS.COUNTER),
-      sourceChainId.toArrayLike(Buffer, "le", 8)
+      sourceChainId.toArrayLike(Buffer, "le", 8),
     ],
     programId
   );
@@ -137,19 +134,19 @@ export async function measureComputeUnits(
 ): Promise<number> {
   // Create a transaction with compute budget instruction
   const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
-    units: 300000
+    units: 300000,
   });
-  
+
   const transaction = new Transaction()
     .add(modifyComputeUnits)
     .add(instruction);
-  
+
   // Send and get logs
   const signature = await connection.sendTransaction(transaction, [payer]);
   await confirmTransaction(connection, signature);
-  
+
   const logs = await getTransactionLogs(connection, signature);
-  
+
   // Parse compute units from logs
   for (const log of logs) {
     const match = log.match(/consumed (\d+) of/);
@@ -157,7 +154,7 @@ export async function measureComputeUnits(
       return parseInt(match[1]);
     }
   }
-  
+
   return 0;
 }
 
@@ -176,7 +173,7 @@ export async function getEventsFromTransaction(
 ): Promise<ParsedEvent[]> {
   const logs = await getTransactionLogs(connection, signature);
   const events: ParsedEvent[] = [];
-  
+
   for (const log of logs) {
     if (log.includes("Program data:")) {
       // Parse base64 encoded event data
@@ -186,7 +183,7 @@ export async function getEventsFromTransaction(
           // This is simplified - actual parsing would decode based on IDL
           events.push({
             name: "UnknownEvent",
-            data: dataMatch[1]
+            data: dataMatch[1],
           });
         } catch (e) {
           // Ignore parsing errors
@@ -194,7 +191,7 @@ export async function getEventsFromTransaction(
       }
     }
   }
-  
+
   return events;
 }
 
@@ -237,7 +234,9 @@ export interface TestMessage {
   offChainData: Buffer;
 }
 
-export function generateTestMessage(overrides?: Partial<TestMessage>): TestMessage {
+export function generateTestMessage(
+  overrides?: Partial<TestMessage>
+): TestMessage {
   return {
     txId: new BN(Math.floor(Math.random() * 1000000)),
     sourceChainId: new BN(2),
@@ -246,7 +245,7 @@ export function generateTestMessage(overrides?: Partial<TestMessage>): TestMessa
     recipient: generateSolanaAddress(),
     onChainData: Buffer.from("test_data"),
     offChainData: Buffer.from(""),
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -254,14 +253,13 @@ export function generateTestMessage(overrides?: Partial<TestMessage>): TestMessa
  * Assertion Helpers
  */
 
-export function assertErrorCode(
-  error: any,
-  expectedCode: string
-): boolean {
+export function assertErrorCode(error: any, expectedCode: string): boolean {
   const errorString = error.toString();
-  return errorString.includes(expectedCode) || 
-         error.message?.includes(expectedCode) ||
-         error.error?.errorCode?.code === expectedCode;
+  return (
+    errorString.includes(expectedCode) ||
+    error.message?.includes(expectedCode) ||
+    error.error?.errorCode?.code === expectedCode
+  );
 }
 
 export async function expectRevert(
@@ -287,7 +285,7 @@ export async function expectRevert(
  */
 
 export async function wait(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -313,16 +311,18 @@ export function logInfo(key: string, value: any): void {
 }
 
 export function logTransaction(signature: string): void {
-  console.log(`  TX: ${signature.substring(0, 20)}...`);
+  console.log(`  TX: ${signature}`);
 }
 
 export function logComputeUnits(cu: number, expected?: number): void {
   const isEfficient = !expected || cu <= expected;
   const status = isEfficient ? "✅" : "⚠️";
-  
+
   if (expected) {
     const efficiency = Math.round((cu / expected) * 100);
-    console.log(`  ${status} CU: ${cu.toLocaleString()} (${efficiency}% of expected)`);
+    console.log(
+      `  ${status} CU: ${cu.toLocaleString()} (${efficiency}% of expected)`
+    );
   } else {
     console.log(`  ${status} CU: ${cu.toLocaleString()}`);
   }
@@ -332,61 +332,63 @@ export function logComputeUnits(cu: number, expected?: number): void {
  * Enhanced transaction logging with compute unit tracking
  */
 export async function logTransactionWithCU(
-  signature: string, 
-  connection: Connection, 
+  signature: string,
+  connection: Connection,
   context?: any,
   operationName?: string,
   expectedCU?: number
 ): Promise<number> {
   logTransaction(signature);
-  
+
   try {
     // Confirm transaction
-    const confirmation = await connection.confirmTransaction(signature, 'confirmed');
-    
+    const confirmation = await connection.confirmTransaction(
+      signature,
+      "confirmed"
+    );
+
     if (confirmation.value.err) {
       console.log(`  ❌ Failed: ${confirmation.value.err}`);
       return 0;
     }
-    
+
     // Fetch transaction details with retry
     let transaction;
     let attempts = 0;
     const maxAttempts = 5;
-    
+
     while (attempts < maxAttempts) {
       transaction = await connection.getTransaction(signature, {
-        commitment: 'confirmed',
-        maxSupportedTransactionVersion: 0
+        commitment: "confirmed",
+        maxSupportedTransactionVersion: 0,
       });
-      
+
       if (transaction) break;
-      
+
       attempts++;
       if (attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
       }
     }
-    
+
     if (!transaction) {
       console.log(`  ⚠️ Could not fetch CU data`);
       return 0;
     }
-    
+
     const computeUnitsUsed = transaction.meta?.computeUnitsConsumed || 0;
-    
+
     // Update context metrics
-    if (context && typeof context.addComputeUnits === 'function') {
+    if (context && typeof context.addComputeUnits === "function") {
       context.addComputeUnits(computeUnitsUsed);
     }
-    
+
     // Simple performance logging
     logComputeUnits(computeUnitsUsed, expectedCU);
-    
+
     return computeUnitsUsed;
   } catch (error) {
     console.log(`  ❌ Error: ${error}`);
     return 0;
   }
 }
-

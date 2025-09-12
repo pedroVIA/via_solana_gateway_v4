@@ -3,11 +3,11 @@
  */
 
 // Load environment variables from .env file
-import * as dotenv from 'dotenv';
-import * as path from 'path';
+import * as dotenv from "dotenv";
+import * as path from "path";
 
 // Load .env file from project root
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 // Export all constants
 export * from "./constants";
@@ -20,3 +20,6 @@ export { TestContext } from "./context";
 
 // Export all fixtures
 export * from "./fixtures";
+
+// Export signature utilities
+export * from "./signature";

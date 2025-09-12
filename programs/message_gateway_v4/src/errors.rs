@@ -86,4 +86,16 @@ pub enum GatewayError {
     
     #[msg("Signature format invalid")]
     InvalidSignatureFormat,
+    
+    #[msg("Invalid chain ID")]
+    InvalidChainId,
+    
+    #[msg("Unsupported chain")]
+    UnsupportedChain,
+    
+    #[msg("Unauthorized access")]
+    UnauthorizedAccess,
+    
+    #[msg("Gateway is disabled")]
+    GatewayDisabled,
 }

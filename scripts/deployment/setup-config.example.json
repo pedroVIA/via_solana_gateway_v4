@@ -1,0 +1,116 @@
+{
+  "chains": [
+    {
+      "id": 1,
+      "name": "Solana",
+      "description": "Solana blockchain network",
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "name": "Ethereum",
+      "description": "Ethereum blockchain network", 
+      "enabled": false
+    },
+    {
+      "id": 3,
+      "name": "Polygon",
+      "description": "Polygon blockchain network",
+      "enabled": false
+    },
+    {
+      "id": 4,
+      "name": "BSC", 
+      "description": "Binance Smart Chain network",
+      "enabled": false
+    },
+    {
+      "id": 5,
+      "name": "Avalanche",
+      "description": "Avalanche blockchain network",
+      "enabled": false
+    }
+  ],
+  "signerRegistries": {
+    "1": [
+      {
+        "type": "VIA",
+        "signers": [
+          "ViaLabs1111111111111111111111111111111111111",
+          "ViaLabs2222222222222222222222222222222222222"
+        ],
+        "threshold": 1,
+        "enabled": true,
+        "_comment": "Replace with actual Via Labs signer public keys"
+      },
+      {
+        "type": "Chain",
+        "signers": [
+          "SolanaValidator111111111111111111111111111111",
+          "SolanaValidator222222222222222222222222222222"
+        ],
+        "threshold": 1,
+        "enabled": true,
+        "_comment": "Replace with actual Solana validator public keys"
+      },
+      {
+        "type": "Project",
+        "signers": [
+          "ProjectSigner111111111111111111111111111111111",
+          "ProjectSigner222222222222222222222222222222222"
+        ],
+        "threshold": 1,
+        "enabled": false,
+        "_comment": "Optional: Replace with your project-specific signer keys"
+      }
+    ],
+    "2": [
+      {
+        "type": "VIA",
+        "signers": [
+          "ViaLabs1111111111111111111111111111111111111"
+        ],
+        "threshold": 1,
+        "enabled": false,
+        "_comment": "Ethereum VIA signers - enable when deploying to Ethereum"
+      },
+      {
+        "type": "Chain",
+        "signers": [
+          "EthereumValidator11111111111111111111111111111"
+        ],
+        "threshold": 1,
+        "enabled": false,
+        "_comment": "Ethereum chain validators"
+      }
+    ]
+  },
+  "skipExisting": true,
+  "dryRun": false,
+  "_instructions": {
+    "overview": "This configuration file defines which chains and signer registries to initialize after program deployment.",
+    "chains": {
+      "description": "Define which blockchain networks to support",
+      "id": "Unique chain identifier (matches Via Labs chain ID standard)",
+      "enabled": "Set to true to initialize gateway for this chain"
+    },
+    "signerRegistries": {
+      "description": "Three-layer security model with VIA, Chain, and Project signers",
+      "VIA": "Via Labs core signers (highest authority)",
+      "Chain": "Blockchain-specific validators (chain security)",
+      "Project": "Application-specific signers (optional, lowest authority)",
+      "threshold": "Minimum signatures required for validation",
+      "enabled": "Set to true to initialize this registry"
+    },
+    "security_notes": {
+      "production": "For mainnet deployments, use real validator public keys and appropriate thresholds",
+      "testing": "For devnet/testnet, you can use test keys or your own keypairs",
+      "backup": "Always backup your signer keypairs securely"
+    },
+    "usage": {
+      "customize": "Copy this file to setup-config.json and customize the signer keys",
+      "deploy": "Run 'yarn setup <network> --config setup-config.json'",
+      "dry_run": "Test with 'yarn setup <network> --config setup-config.json --dry-run'"
+    }
+  }
+}

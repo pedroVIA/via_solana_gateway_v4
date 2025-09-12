@@ -9,7 +9,7 @@ pub mod utils;
 
 use instructions::*;
 
-declare_id!("4hjwz5e8jYyj13wqRsUbvJYyCrsjt3EwSDRmppLJkjYL");
+declare_id!("2RgmXiQc6d5nys8vCMLKAovNKXneQK9SLkgRtnThex7i");
 
 /// Via Labs V4 Message Gateway Program
 /// 
@@ -95,6 +95,14 @@ pub mod message_gateway_v4 {
         enabled: bool,
     ) -> Result<()> {
         instructions::admin::set_system_enabled(ctx, enabled)
+    }
+    
+    /// Initialize a Counter PDA for a source chain (admin only)
+    pub fn initialize_counter(
+        ctx: Context<InitializeCounter>,
+        source_chain_id: u64,
+    ) -> Result<()> {
+        instructions::initialize_counter::handler(ctx, source_chain_id)
     }
 
     /// Initialize a signer registry

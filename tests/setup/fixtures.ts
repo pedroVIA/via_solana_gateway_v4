@@ -1,16 +1,16 @@
 import * as anchor from "@coral-xyz/anchor";
 import { BN } from "@coral-xyz/anchor";
 import { Keypair } from "@solana/web3.js";
-import { 
-  TEST_ADDRESSES, 
-  TEST_TX_IDS, 
+import {
+  TEST_ADDRESSES,
+  TEST_TX_IDS,
   TEST_PAYLOADS,
-  CHAIN_IDS 
+  CHAIN_IDS,
 } from "./constants";
-import { 
-  ethAddressFromHex, 
+import {
+  ethAddressFromHex,
   generateEthereumAddress,
-  generateSolanaAddress 
+  generateSolanaAddress,
 } from "./helpers";
 
 /**
@@ -103,10 +103,10 @@ export class SequentialMessageGenerator {
       onChainData: Buffer.from(`message_${this.currentTxId.toString()}`),
       offChainData: Buffer.from(""),
     };
-    
+
     // Increment for next message
     this.currentTxId = this.currentTxId.add(new BN(1));
-    
+
     return message;
   }
 
@@ -133,7 +133,7 @@ export const INVALID_MESSAGE_FIXTURES = {
     sourceChainId: CHAIN_IDS.ETHEREUM_MAINNET,
     destChainId: CHAIN_IDS.SOLANA_LOCALNET,
     sender: generateEthereumAddress(),
-    recipient: Buffer.alloc(15, 0xFF), // Wrong size
+    recipient: Buffer.alloc(15, 0xff), // Wrong size
     onChainData: TEST_PAYLOADS.SIMPLE,
     offChainData: TEST_PAYLOADS.EMPTY,
   },
@@ -206,7 +206,7 @@ export function generateMessageBatch(
 ) {
   const messages = [];
   const startTxId = options?.startTxId || new BN(100000);
-  
+
   for (let i = 0; i < count; i++) {
     messages.push({
       txId: startTxId.add(new BN(i)),
@@ -218,7 +218,7 @@ export function generateMessageBatch(
       offChainData: Buffer.from(""),
     });
   }
-  
+
   return messages;
 }
 
@@ -253,8 +253,8 @@ export const EDGE_CASE_FIXTURES = {
     txId: TEST_TX_IDS.EDGE_CASE_MAX,
     sourceChainId: new BN("18446744073709551615"), // u64 max
     destChainId: new BN("18446744073709551615"), // u64 max
-    sender: Buffer.alloc(32, 0xFF),
-    recipient: Buffer.alloc(32, 0xFF),
+    sender: Buffer.alloc(32, 0xff),
+    recipient: Buffer.alloc(32, 0xff),
     onChainData: TEST_PAYLOADS.MAX_SIZE,
     offChainData: TEST_PAYLOADS.MAX_SIZE,
   },

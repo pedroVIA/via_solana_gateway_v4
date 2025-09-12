@@ -6,7 +6,7 @@ use anchor_lang::solana_program::{
 };
 use crate::{
     errors::GatewayError,
-    state::{MessageSignature, SignerRegistry, SignerLayer, ValidationResult},
+    state::{MessageSignature, SignerRegistry, ValidationResult},
     constants::{MAX_SIGNATURES_PER_MESSAGE, MIN_SIGNATURES_REQUIRED},
     utils::hash::validate_message_hash,
 };
@@ -36,7 +36,10 @@ pub fn verify_ed25519_signature(
         if let Ok(ix) = load_instruction_at_checked(i as usize, ix_sysvar_account) {
             if ix.program_id == ed25519_program::ID {
                 if let Some(is_valid) = parse_ed25519_instruction(&ix, signature, signer, message_hash) {
-                    return Ok(is_valid);
+                    if is_valid {
+                        return Ok(true);
+                    }
+                    // Continue loop if this Ed25519 instruction doesn't match our signature
                 }
             }
         }

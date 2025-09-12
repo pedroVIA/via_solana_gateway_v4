@@ -1,0 +1,71 @@
+{
+  "networks": {
+    "localnet": {
+      "url": "http://127.0.0.1:8899",
+      "programId": "2RgmXiQc6d5nys8vCMLKAovNKXneQK9SLkgRtnThex7i",
+      "keypairPath": "target/deploy/message_gateway_v4-keypair.json",
+      "commitment": "confirmed",
+      "cost": "free",
+      "description": "Local development network"
+    },
+    "devnet": {
+      "url": "https://api.devnet.solana.com",
+      "programId": "2RgmXiQc6d5nys8vCMLKAovNKXneQK9SLkgRtnThex7i",
+      "keypairPath": "target/deploy/message_gateway_v4-keypair.json",
+      "commitment": "confirmed",
+      "cost": "free",
+      "description": "Devnet testing network"
+    },
+    "testnet": {
+      "url": "https://api.testnet.solana.com",
+      "programId": null,
+      "keypairPath": "target/deploy/message_gateway_v4-testnet-keypair.json",
+      "commitment": "confirmed",
+      "cost": "free",
+      "description": "Testnet validation network"
+    },
+    "mainnet": {
+      "url": "https://api.mainnet-beta.solana.com",
+      "programId": null,
+      "keypairPath": "target/deploy/message_gateway_v4-mainnet-keypair.json",
+      "commitment": "finalized",
+      "cost": "3-5 SOL",
+      "description": "Production mainnet network"
+    }
+  },
+  "requirements": {
+    "localnet": {
+      "minBalance": "2 SOL",
+      "validation": [
+        "keypair_exists",
+        "network_reachable"
+      ]
+    },
+    "devnet": {
+      "minBalance": "2 SOL",
+      "validation": [
+        "keypair_exists",
+        "network_reachable",
+        "sufficient_balance"
+      ]
+    },
+    "testnet": {
+      "minBalance": "2 SOL",
+      "validation": [
+        "keypair_exists",
+        "network_reachable",
+        "sufficient_balance"
+      ]
+    },
+    "mainnet": {
+      "minBalance": "6 SOL",
+      "validation": [
+        "keypair_exists",
+        "network_reachable",
+        "sufficient_balance",
+        "security_audit",
+        "upgrade_authority_configured"
+      ]
+    }
+  }
+}

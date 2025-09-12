@@ -33,3 +33,12 @@ pub struct MessageProcessed {
 pub struct SystemStatusChanged {
     pub enabled: bool,
 }
+
+/// Event emitted when a Counter PDA is initialized
+#[event]
+pub struct CounterInitialized {
+    pub source_chain_id: u64,
+    pub counter_pda: Pubkey,
+    pub authority: Pubkey,
+    pub gateway: Pubkey,
+}
